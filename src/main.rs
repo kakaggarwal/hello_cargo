@@ -1,5 +1,9 @@
 use rand::Rng;
-use std::{cmp::Ordering, io};
+use std::{
+    any::{type_name},
+    cmp::Ordering,
+    io::{self, Write},
+};
 
 fn main() {
     loop {
@@ -7,7 +11,9 @@ fn main() {
         println!("1. Guessing Game");
         println!("2. Mutability");
         println!("3. Shadowing");
+        println!("4. Floating Point Numbers");
         print!("Enter your choice: ");
+        io::stdout().flush().unwrap();
 
         let mut choice = String::new();
 
@@ -24,6 +30,7 @@ fn main() {
             1 => guess_game(),
             2 => mutability(),
             3 => shadowing(),
+            4 => floating_point_numbers(),
             _other => break,
         };
 
@@ -67,6 +74,11 @@ fn mutability() {
 
     x = 6;
     println!("The value of x is {x}");
+
+    /*
+      Notice the "mut" keyword used here, it enables us to declare a variable as mutable.
+      By default all variables declared in Rust with let are immutable.
+    */
 }
 
 fn shadowing() {
@@ -80,4 +92,28 @@ fn shadowing() {
     }
 
     println!("Value of x is: {x}");
+
+    /*
+       variable x is shadowed in outer scope and inner scope.
+       Inner scope shadowing ends as soon as inner scope ends.
+    */
+}
+
+fn floating_point_numbers() {
+    let x = 2.0;
+
+    println!("Data type of x is {}", get_type_of(&x));
+
+    let y: f32 = 3.0;
+
+    println!("Data type of y is {}", get_type_of(&y));
+
+    /*
+       By Default f64 floating type is used in Rust as f64 and f32 have almost same performance and speed on modern OSs.
+       With f64 we get more precision than f32.
+    */
+}
+
+fn get_type_of<T>(_: &T) -> &str {
+    return type_name::<T>();
 }
